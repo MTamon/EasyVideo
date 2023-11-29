@@ -4,10 +4,10 @@ from os import path
 from setuptools import setup
 
 # TODO: change project to your project name
-from video_tools import VERSION, LICENCE, AUTHOR, EMAIL, GIT_URL
+from easy_video import VERSION, LICENCE, AUTHOR, EMAIL, GIT_URL
 
-NAME = "video_tools"
-PACKAGES = ["video_tools"]
+NAME = "easy_video"
+PACKAGES = ["easy_video"]
 DESCRIPTION = "Wrap OpenCV package for make accessing video-file easier."
 KEYWORDS = "keywords1, kyewords2, keywords3, ..."
 

@@ -12,7 +12,7 @@ import cv2
 from numpy import ndarray
 import moviepy.editor as mpedit
 
-from video_tools.open_type import OpenReadMode, OpenWriteMode
+from easy_video.open_type import OpenReadMode, OpenWriteMode
 
 ATTR_ALL = [
     "_set_writer",

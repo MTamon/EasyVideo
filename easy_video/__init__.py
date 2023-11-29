@@ -1,6 +1,6 @@
 """Initialize published package."""
 
-from video_tools.video import VideoReader, VideoWriter, _VideoRIdx, open_video
+from easy_video.video import VideoReader, VideoWriter, _VideoRIdx, open_video
 
 ############## EDIT THESE INFORMATION ###############
 AUTHOR = "Tamon Mikawa"
