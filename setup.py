@@ -3,7 +3,6 @@
 from os import path
 from setuptools import setup
 
-# TODO: change project to your project name
 from easy_video import VERSION, LICENCE, AUTHOR, EMAIL, GIT_URL
 
 NAME = "easy_video"
