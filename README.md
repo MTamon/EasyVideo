@@ -1,2 +1,2 @@
 # pypi-temp
-PyPi template for MTamon's python projects.
+Wrap OpenCV package for make accessing video-file easier.

@@ -4,11 +4,11 @@ from os import path
 from setuptools import setup
 
 # TODO: change project to your project name
-from project import VERSION, LICENCE, AUTHOR, EMAIL, GIT_URL
+from video_tools import VERSION, LICENCE, AUTHOR, EMAIL, GIT_URL
 
-NAME = "project"
-PACKAGES = ["project"]
-DESCRIPTION = "description"
+NAME = "video_tools"
+PACKAGES = ["video_tools"]
+DESCRIPTION = "Wrap OpenCV package for make accessing video-file easier."
 KEYWORDS = "keywords1, kyewords2, keywords3, ..."
 
 root_dir = path.abspath(path.dirname(__file__))

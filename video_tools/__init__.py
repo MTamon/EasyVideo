@@ -1,14 +1,13 @@
 """Initialize published package."""
 
-# TODO: import modules here
-# example: from .src import module1, module2, module3
+from video_tools.video import VideoReader, VideoWriter, _VideoRIdx, open_video
 
 ############## EDIT THESE INFORMATION ###############
-AUTHOR = "John Smith"
-EMAIL = "john.smith@email.com"
+AUTHOR = "Tamon Mikawa"
+EMAIL = "mtamon.engineering@gmail.com"
 YEAR = "2023"
-GIT_URL = "https://github.com/john-smith/project.git"
-VERSION = "0.0.0"
+GIT_URL = "https://github.com/MTamon/VideoTools.git"
+VERSION = "0.0.1"
 LICENCE = "MIT License"
 #####################################################
 
@@ -19,6 +18,4 @@ __author__ = AUTHOR
 __author_email__ = EMAIL
 __url__ = GIT_URL
 
-# TODO: add modules here
-# example: __all__ = ["module1", "module2", "module3"]
-__all__ = []
+__all__ = ["VideoReader", "VideoWriter", "open_video", "_VideoRIdx"]
