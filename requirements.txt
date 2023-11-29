@@ -1,2 +1,4 @@
+moviepy==1.0.3
+numpy==1.23.4
 opencv-contrib-python==4.8.1.78
 opencv-python==4.8.1.78

@@ -8,7 +8,7 @@ from easy_video import VERSION, LICENCE, AUTHOR, EMAIL, GIT_URL
 NAME = "easy_video"
 PACKAGES = ["easy_video"]
 DESCRIPTION = "Wrap OpenCV package for make accessing video-file easier."
-KEYWORDS = "keywords1, kyewords2, keywords3, ..."
+KEYWORDS = "opencv, wrapper, video I/O, video processing"
 
 root_dir = path.abspath(path.dirname(__file__))
 
