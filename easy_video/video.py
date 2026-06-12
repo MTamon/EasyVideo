@@ -10,7 +10,6 @@ import warnings
 from typing import List, Optional, Union, Tuple, overload
 import cv2
 from numpy import ndarray
-import moviepy.editor as mpedit
 
 from easy_video.open_type import OpenReadMode, OpenWriteMode
 
@@ -154,9 +153,17 @@ class VideoWriter(_VideoWB):
 
 
 def patch_audio(out_path: str, video_path: str, audio_path: str) -> None:
+    try:
+        import moviepy.editor as mpedit  # moviepy 1.x
+    except ModuleNotFoundError:
+        import moviepy as mpedit  # moviepy 2.x (`moviepy.editor` was removed)
+
     video = mpedit.VideoFileClip(video_path)
     audio = mpedit.AudioFileClip(audio_path)
-    video: mpedit.VideoFileClip = video.set_audio(audio)
+    if hasattr(video, "set_audio"):  # moviepy 1.x
+        video = video.set_audio(audio)
+    else:  # moviepy 2.x renamed it to with_audio
+        video = video.with_audio(audio)
     video.write_videofile(out_path)
     video.close()
     audio.close()
@@ -207,6 +214,7 @@ class _VideoRIdx(_VideoRB):
             self._stop = self._cap_frames
 
         self._length = self.__len__()
+        self._reset()
 
     @overload
     def __getitem__(self, idx: int) -> ndarray:
@@ -218,7 +226,7 @@ class _VideoRIdx(_VideoRB):
 
     def __getitem__(self, idx) -> Union[ndarray, _VideoRIdx]:
         if isinstance(idx, int):
-            pos = cv2.CAP_PROP_POS_FRAMES
+            pos = self._cap.get(cv2.CAP_PROP_POS_FRAMES)
             self._cap.set(cv2.CAP_PROP_POS_FRAMES, idx)
             _, frame = self._cap.read()
             self._cap.set(cv2.CAP_PROP_POS_FRAMES, pos)
@@ -231,21 +239,22 @@ class _VideoRIdx(_VideoRB):
 
     def __len__(self) -> int:
         length = self._stop - self._start
-        return length
+        if length <= 0:
+            return 0
+        return (length + self._step - 1) // self._step
 
     def __iter__(self) -> _VideoRIdx:
         return self
 
     def __next__(self) -> ndarray:
-        if self._current_idx == self._stop:
+        if self._current_idx >= self._stop:
             self._reset()
             raise StopIteration
 
         frame = self._cap.read()[1]
         self._current_idx += self._step
         if self._step > 1:
-            current_frame = self._start + self._current_idx
-            self._cap.set(cv2.CAP_PROP_POS_FRAMES, current_frame)
+            self._cap.set(cv2.CAP_PROP_POS_FRAMES, self._current_idx)
         return frame
 
     def _reset(self):
