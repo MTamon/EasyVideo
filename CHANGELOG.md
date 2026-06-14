@@ -15,3 +15,7 @@
 - `patch_audio`: moviepy is now imported lazily and supports both moviepy 1.x (`moviepy.editor` / `set_audio`) and 2.x (`moviepy` / `with_audio`). With moviepy 2.x installed, `import easy_video` itself used to fail.
 ### Add
 - `tests/test_video_reader.py`: regression tests for the fixes above (synthetic video with bit-pattern frame indices).
+
+## [0.0.6] - 2026-06-14
+### Fix
+- Declare the `typing_extensions` runtime dependency (used by `open_type.py`). It was missing from requirements, so a clean install (without it pulled in transitively) failed to `import easy_video`.
