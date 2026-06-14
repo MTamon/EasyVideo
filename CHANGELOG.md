@@ -19,3 +19,7 @@
 ## [0.0.6] - 2026-06-14
 ### Fix
 - Declare the `typing_extensions` runtime dependency (used by `open_type.py`). It was missing from requirements, so a clean install (without it pulled in transitively) failed to `import easy_video`.
+
+## [0.0.7] - 2026-06-15
+### Fix
+- Relax pinned runtime dependencies (numpy / opencv / moviepy) from exact `==` to `>=` lower bounds. The previous `numpy==1.23.4` pin conflicted with opencv/moviepy (which pull in newer numpy) and made a clean install unresolvable on modern Python.
