@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import re
 from os import path
 from setuptools import setup
-
-from easy_video import VERSION, LICENCE, AUTHOR, EMAIL, GIT_URL
 
 NAME = "easy_video"
 PACKAGES = ["easy_video"]
@@ -11,6 +10,25 @@ DESCRIPTION = "Wrap OpenCV package for make accessing video-file easier."
 KEYWORDS = "opencv, wrapper, video I/O, video processing"
 
 root_dir = path.abspath(path.dirname(__file__))
+
+
+def _read_meta(name: str) -> str:
+    """Read a metadata constant from the package __init__ without importing it
+    (avoids requiring runtime dependencies such as cv2 at build time)."""
+    init_path = path.join(root_dir, "easy_video", "__init__.py")
+    with open(init_path, encoding="utf-8") as f:
+        content = f.read()
+    match = re.search(rf'^{name}\s*=\s*["\'](.+?)["\']', content, re.MULTILINE)
+    if match is None:
+        raise RuntimeError(f"Unable to find {name} in {init_path}")
+    return match.group(1)
+
+
+VERSION = _read_meta("VERSION")
+LICENCE = _read_meta("LICENCE")
+AUTHOR = _read_meta("AUTHOR")
+EMAIL = _read_meta("EMAIL")
+GIT_URL = _read_meta("GIT_URL")
 
 
 def _requirements():
