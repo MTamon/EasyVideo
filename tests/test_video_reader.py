@@ -124,6 +124,24 @@ def test_getitem_int():
     assert _decode_idx(reader[42]) == 42
 
 
+def test_writer_roundtrip_honors_start():
+    """Real-world path (e.g. an A/V alignment trim): ``VideoWriter.write(clip)``
+    fetches ``clip[0]`` to size the writer *before* iterating. With the pre-0.0.5
+    ``__getitem__`` bug (bug 3) that sizing read corrupted the capture position,
+    so the written clip began at frame 1 and dropped its first frame *even when
+    start == 0* (and ignored a non-zero start entirely, bug 1). The full
+    reader->writer->reader round-trip must now reproduce ``[start, stop)``."""
+    for start, stop in ((0, 10), (5, 15)):
+        reader = VideoReader(_VIDEO_PATH)
+        clip = reader.trime_frame(start, stop)
+        out_path = os.path.join(_TMP_DIR, f"roundtrip_{start}_{stop}.mp4")
+        writer = VideoWriter(out_path, fps=FPS)
+        writer.write(clip)
+        writer.close()
+        indices = [_decode_idx(f) for f in VideoReader(out_path)]
+        assert indices == list(range(start, stop)), (start, stop, indices)
+
+
 if __name__ == "__main__":
     failed = 0
     for name, fn in sorted(globals().items()):

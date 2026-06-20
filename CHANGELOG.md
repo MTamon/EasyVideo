@@ -23,3 +23,18 @@
 ## [0.0.7] - 2026-06-15
 ### Fix
 - Relax pinned runtime dependencies (numpy / opencv / moviepy) from exact `==` to `>=` lower bounds. The previous `numpy==1.23.4` pin conflicted with opencv/moviepy (which pull in newer numpy) and made a clean install unresolvable on modern Python.
+
+## [0.0.8] - 2026-06-20
+### Add
+- `tests/test_video_reader.py::test_writer_roundtrip_honors_start`: regression
+  guard for the real-world `VideoWriter.write(reader_clip)` round-trip. Because
+  `write()` reads `clip[0]` to size the writer *before* iterating, the pre-0.0.5
+  `__getitem__` position bug (bug 3) shifted the written clip by one frame —
+  dropping the first frame *even when `start == 0`* (and combined with bug 1 it
+  ignored a non-zero `start` entirely). The 0.0.5 fixes already resolve this; the
+  test pins the behaviour so the write-path interaction can never regress.
+### Note
+- No code change — the `_VideoRIdx` fixes shipped in 0.0.5 already make this
+  round-trip correct. This release only hardens the test suite to cover the
+  write path explicitly (the prior tests exercised `__getitem__` mid-iteration
+  but not the `write()`-triggered sizing read before the first iteration).
